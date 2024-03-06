@@ -1,6 +1,6 @@
 // CONSTANTS
-const width = window.innerWidth * 0.8,
-  height = window.innerHeight * 0.8,
+const width = window.innerWidth * 0.9,
+  height = window.innerHeight * 0.85,
   margin = { top: 25, bottom: 50, left: 50, right: 25 };
 
 /**
@@ -30,11 +30,10 @@ Promise.all([d3.json("all_countries.geo.json"), d3.csv("concap.csv")]).then(
  * this will be run *one time* when the data finishes loading in
  * */
 function init() {
-  // const projection = d3.geoAlbersUsa()
-  //     .fitSize([width - margin.left - margin.right,
-  //         height - margin.top - margin.bottom],
-  //         state.geojson);
-  //     // Fit size tells D3 to fit usMapData into the specified x and y area
+  const projection = d3
+    .geoNaturalEarth1()
+    .fitSize([width - margin.right, height], state.geojson);
+  // Fit size tells D3 to fit usMapData into the specified x and y area
 
   // CREATE SVG
   const svg = d3
@@ -44,17 +43,19 @@ function init() {
     .attr("height", height)
     .style("background-color", "lavender");
 
-  // // PATH GENERATOR FOR MAP
-  // const pathGen = d3.geoPath(projection);
+  // PATH GENERATOR FOR MAP
+  const pathGen = d3.geoPath(projection);
 
-  // // DRAW THE US MAP USING THE PATH GEN
-  // const states = svg.selectAll(".state-path")
-  //     .data(state.geojson.features)
-  //     .join("path")
-  //     .attr("class", "state-path")
-  //     .attr("stroke", "black")
-  //     .attr("fill", "transparent")
-  //     .attr("d", pathGen)
+  // DRAW THE US MAP USING THE PATH GEN
+  const states = svg
+    .selectAll(".state-path")
+    .data(state.geojson.features)
+    .join("path")
+    .attr("class", "state-path")
+    .attr("stroke", "black")
+    .attr("fill", "transparent")
+    .attr("d", pathGen)
+    .style("border", "1px solid black");
 
   // draw(); // calls the draw function
 }
