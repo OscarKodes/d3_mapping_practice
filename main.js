@@ -40,14 +40,14 @@ function init() {
     .select("#container")
     .append("svg")
     .attr("width", width)
-    .attr("height", height)
-    .style("background-color", "lavender");
+    .attr("height", height);
+  // .style("background-color", "lavender");
 
   // PATH GENERATOR FOR MAP
   const pathGen = d3.geoPath(projection);
 
   // DRAW THE US MAP USING THE PATH GEN
-  const states = svg
+  const countries = svg
     .selectAll(".state-path")
     .data(state.geojson.features)
     .join("path")
@@ -57,13 +57,19 @@ function init() {
     .attr("d", pathGen)
     .style("border", "1px solid black");
 
-  // draw(); // calls the draw function
+  // DRAW Country Capitals ======================
+
+  svg
+    .selectAll(".capital")
+    .data(state.data)
+    .join("circle")
+    .attr("class", "capital")
+    .attr("r", 3)
+    .attr("stroke", "red")
+    .attr("fill", "yellow")
+    .attr("transform", (d) => {
+      const [x, y] = projection([d.CapitalLongitude, d.CapitalLatitude]);
+
+      return `translate(${x}, ${y})`;
+    });
 }
-
-// /**
-// * DRAW FUNCTION
-// * we call this every time there is an update to the data/state
-// * */
-// function draw() {
-
-// }
